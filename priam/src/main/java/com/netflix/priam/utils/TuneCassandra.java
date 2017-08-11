@@ -53,7 +53,7 @@ public class TuneCassandra extends Task
     	while (!isDone) {
     	  try {
               hostLocalIp = id.getInstance().getHostLocalIP();
-              tuner.writeAllProperties(config.getYamlLocation(), hostIp, config.getSeedProviderName());
+              tuner.writeAllProperties(config.getYamlLocation(), hostLocalIp, config.getSeedProviderName());
               isDone = true;
     	   } catch (IOException e) {
     		  LOGGER.info("Failed writing cassandra.yml file:" + e.getMessage());
