@@ -317,6 +317,11 @@ public interface IConfiguration {
     public String getHostIP();
 
     /**
+     * @return Get host IP
+     */
+    public String getHostLocalIP();
+
+    /**
      * @return Bytes per second to throttle for backups
      */
     public int getUploadThrottle();
