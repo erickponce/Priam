@@ -48,11 +48,11 @@ public class TuneCassandra extends Task
     public void execute() throws IOException
     {
     	boolean isDone = false;
-        String hostIp = null;
+        String hostLocalIp = null;
     	
     	while (!isDone) {
     	  try {
-              hostIp = id.getInstance().getHostIP();
+              hostLocalIp = id.getInstance().getHostLocalIP();
               tuner.writeAllProperties(config.getYamlLocation(), hostIp, config.getSeedProviderName());
               isDone = true;
     	   } catch (IOException e) {
