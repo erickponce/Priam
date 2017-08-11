@@ -34,9 +34,6 @@ public class TuneCassandra extends Task
 	private static final Logger LOGGER = LoggerFactory.getLogger(TuneCassandra.class);
     public static final String JOBNAME = "Tune-Cassandra";
     private final CassandraTuner tuner;
-
-    @Inject
-    private InstanceIdentity id;
     
     @Inject
     public TuneCassandra(IConfiguration config, CassandraTuner tuner)
@@ -48,12 +45,14 @@ public class TuneCassandra extends Task
     public void execute() throws IOException
     {
     	boolean isDone = false;
-        String hostLocalIp = null;
     	
     	while (!isDone) {
     	  try {
-              hostLocalIp = id.getInstance().getHostLocalIP();
-              tuner.writeAllProperties(config.getYamlLocation(), hostLocalIp, config.getSeedProviderName());
+              tuner.writeAllProperties(
+                  config.getYamlLocation(), 
+                  config.getHostIP(), 
+                  config.getSeedProviderName()
+              );
               isDone = true;
     	   } catch (IOException e) {
     		  LOGGER.info("Failed writing cassandra.yml file:" + e.getMessage());

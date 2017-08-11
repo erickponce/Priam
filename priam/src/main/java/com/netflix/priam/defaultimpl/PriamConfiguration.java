@@ -755,12 +755,6 @@ public class PriamConfiguration implements IConfiguration
     }
 
     @Override
-    public String getHostLocalIP()
-    {
-        return LOCAL_IP;
-    }
-
-    @Override
     public int getUploadThrottle()
     {
         return config.get(CONFIG_THROTTLE_UPLOAD_PER_SECOND, Integer.MAX_VALUE);
