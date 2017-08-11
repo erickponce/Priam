@@ -26,8 +26,7 @@ import com.netflix.priam.IConfiguration;
 import com.netflix.priam.scheduler.SimpleTimer;
 import com.netflix.priam.scheduler.Task;
 import com.netflix.priam.scheduler.TaskTimer;
-import com.netflix.priam.identity.IPriamInstanceFactory;
-import com.netflix.priam.identity.PriamInstance;
+import com.netflix.priam.identity.InstanceIdentity;
 
 @Singleton
 public class TuneCassandra extends Task
@@ -35,10 +34,12 @@ public class TuneCassandra extends Task
 	private static final Logger LOGGER = LoggerFactory.getLogger(TuneCassandra.class);
     public static final String JOBNAME = "Tune-Cassandra";
     private final CassandraTuner tuner;
-    private final IPriamInstanceFactory<PriamInstance> factory;
 
     @Inject
-    public TuneCassandra(IConfiguration config, CassandraTuner tuner, IPriamInstanceFactory factory)
+    private InstanceIdentity id;
+    
+    @Inject
+    public TuneCassandra(IConfiguration config, CassandraTuner tuner)
     {
         super(config);
         this.tuner = tuner;
@@ -48,11 +49,11 @@ public class TuneCassandra extends Task
     public void execute() throws IOException
     {
     	boolean isDone = false;
-        String hostId = null;
+        String hostIp = null;
     	
     	while (!isDone) {
     	  try {
-              hostIp = factory.getInstance().getHostIP();
+              hostIp = id.getInstance().getHostIP();
               tuner.writeAllProperties(config.getYamlLocation(), hostIp, config.getSeedProviderName());
               isDone = true;
     	   } catch (IOException e) {
