@@ -43,7 +43,6 @@ public class TuneCassandra extends Task
     {
         super(config);
         this.tuner = tuner;
-        this.factory = factory;
     }
 
     public void execute() throws IOException
