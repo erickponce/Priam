@@ -26,6 +26,8 @@ import com.netflix.priam.IConfiguration;
 import com.netflix.priam.scheduler.SimpleTimer;
 import com.netflix.priam.scheduler.Task;
 import com.netflix.priam.scheduler.TaskTimer;
+import com.netflix.priam.identity.IPriamInstanceFactory;
+import com.netflix.priam.identity.PriamInstance;
 
 @Singleton
 public class TuneCassandra extends Task
