@@ -26,6 +26,7 @@ import com.netflix.priam.IConfiguration;
 import com.netflix.priam.scheduler.SimpleTimer;
 import com.netflix.priam.scheduler.Task;
 import com.netflix.priam.scheduler.TaskTimer;
+import com.netflix.priam.identity.InstanceIdentity;
 
 @Singleton
 public class TuneCassandra extends Task
@@ -34,6 +35,9 @@ public class TuneCassandra extends Task
     public static final String JOBNAME = "Tune-Cassandra";
     private final CassandraTuner tuner;
 
+    @Inject
+    private InstanceIdentity id;
+    
     @Inject
     public TuneCassandra(IConfiguration config, CassandraTuner tuner)
     {
@@ -44,13 +48,15 @@ public class TuneCassandra extends Task
     public void execute() throws IOException
     {
     	boolean isDone = false;
+        String hostIp = null;
     	
     	while (!isDone) {
     	  try {
-              tuner.writeAllProperties(config.getYamlLocation(), null, config.getSeedProviderName());
+              hostIp = id.getInstance().getHostIP();
+              tuner.writeAllProperties(config.getYamlLocation(), hostIp, config.getSeedProviderName());
               isDone = true;
     	   } catch (IOException e) {
-    		  LOGGER.error("Fail wrting cassandra.yml file. Retry again!",e);
+    		  LOGGER.info("Failed writing cassandra.yml file:" + e.getMessage());
     	   }
     	}
     	
